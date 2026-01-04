@@ -58,8 +58,12 @@ const HomeTestimonials = () => {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold">{review.name}</h4>
-                  <p className="text-base-content/60 text-sm">{review.role}</p>
+                  <h4 className="text-primary-dark dark:text-primary-light text-lg font-bold">
+                    {review.name}
+                  </h4>
+                  <p className="text-primary-dark dark:text-primary-light text-sm">
+                    {review.role}
+                  </p>
                 </div>
               </div>
               <div className="rating rating-sm mb-4">
@@ -73,7 +77,7 @@ const HomeTestimonials = () => {
                   />
                 ))}
               </div>
-              <p className="text-base-content/80 italic">
+              <p className="text-primary-dark dark:text-primary-light italic">
                 &quot;{review.text}&quot;
               </p>
             </div>

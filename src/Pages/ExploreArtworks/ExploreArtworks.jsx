@@ -70,7 +70,7 @@ const ExploreArtworks = () => {
   }, [page, searchQuery, selectedCategory, sortOption, axiosInstance]);
 
   return (
-    <div className="from-primary/10 to-secondary/10 min-h-screen bg-gradient-to-br px-4 py-12">
+    <div className="bg-primary-light dark:bg-primary-dark min-h-screen px-4 py-12">
       <div className="container mx-auto">
         {/* Header */}
         <motion.div
@@ -99,14 +99,14 @@ const ExploreArtworks = () => {
               <input
                 type="text"
                 placeholder="Search by title or artist..."
-                className="input input-bordered bg-base-100/50 focus:border-primary w-full backdrop-blur-sm"
+                className="input input-bordered bg-card-light dark:bg-card-dark text-primary-dark dark:text-primary-light focus:border-primary border-button-bg w-full border backdrop-blur-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             <select
-              className="select select-bordered bg-base-100/50 w-full backdrop-blur-sm md:w-1/3"
+              className="select select-bordered bg-card-light text-primary-dark border-button-bg dark:text-primary-light dark:bg-card-dark w-full border md:w-1/3"
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
             >
@@ -127,8 +127,8 @@ const ExploreArtworks = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`btn btn-sm md:btn-md rounded-full px-6 transition-all ${
                   selectedCategory === category
-                    ? "btn-primary shadow-lg"
-                    : "btn-ghost bg-base-100/30 hover:bg-base-100/50"
+                    ? "bg-button-bg border-none shadow-lg"
+                    : "bg-card-light dark:bg-card-dark text-primary-dark dark:text-primary-light border-button-bg hover:bg-tag-bg border"
                 }`}
               >
                 {category}

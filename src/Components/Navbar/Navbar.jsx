@@ -159,6 +159,14 @@ const Navbar = () => {
                 </span>
               </li>
               <li>
+                <Link
+                  to={"/dashboard"}
+                  className="btn bg-card-light dark:bg-card-dark text-primary-dark dark:text-primary-light"
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li>
                 <button
                   onClick={handleLogOut}
                   className="text-error text-base hover:font-bold hover:underline"

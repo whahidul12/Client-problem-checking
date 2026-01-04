@@ -65,7 +65,7 @@ const HomeCommunity = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card bg-card-light dark:bg-card-dark rounded-3xl border border-none p-8 shadow-2xl"
+              className="card bg-card-light dark:bg-card-dark border-button-bg rounded-3xl border p-8 shadow-xl"
             >
               <div className="mb-4 text-4xl">{stat.icon}</div>
               <h3 className="text-primary-dark dark:text-primary-light mb-2 text-4xl font-extrabold md:text-5xl">

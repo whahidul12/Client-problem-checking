@@ -48,9 +48,9 @@ const HomeTopArtist = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className="card shadow-xl transition-all hover:shadow-2xl"
+              className="border-button-bg rounded-3xl border shadow-xl hover:shadow-2xl"
             >
-              <div className="card-body from-primary/10 to-secondary/10 text-primary-dark dark:text-primary-light bg-card-light dark:bg-card-dark items-center rounded-2xl text-center">
+              <div className="card-body from-primary/10 to-secondary/10 text-primary-dark dark:text-primary-light bg-card-light dark:bg-card-dark items-center rounded-3xl text-center">
                 <div className="avatar mb-4">
                   <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
                     <img
@@ -77,7 +77,7 @@ const HomeTopArtist = () => {
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={i}
-                      className={`mask mask-star-2 ${i < 4 ? "bg-warning" : "bg-gray-300"}`}
+                      className={`mask mask-star-2 ${i < 4 ? "bg-yellow-500" : "bg-gray-300"}`}
                     />
                   ))}
                 </div>

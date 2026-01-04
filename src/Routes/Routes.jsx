@@ -17,6 +17,7 @@ import PrivetRoutes from "./PrivetRoutes";
 import NotFound from "../Pages/NotFound/NotFound";
 import LoadingSpinner from "../Components/LoadingSpinner/LoadingSpinner";
 import AboutUs from "../Pages/AboutUs/AboutUs";
+import Dashboard from "../Pages/Dashboard/Dashboard";
 
 const Routes = createBrowserRouter([
   {
@@ -84,6 +85,16 @@ const Routes = createBrowserRouter([
           <PrivetRoutes>
             <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
               <ArtworkDetails></ArtworkDetails>
+            </Suspense>
+          </PrivetRoutes>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivetRoutes>
+            <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
+              <Dashboard></Dashboard>
             </Suspense>
           </PrivetRoutes>
         ),

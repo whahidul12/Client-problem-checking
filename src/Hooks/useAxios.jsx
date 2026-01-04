@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 
-const productionUrl = "https://server-checking-beta.vercel.app";
+const productionUrl = "https://server-problrm-checking.vercel.app/";
 const developmentUrl = "http://localhost:3000";
 
 const baseURL =

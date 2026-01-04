@@ -11,15 +11,17 @@ const HomeFAQ = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="mb-6 text-4xl font-bold">
+          <h2 className="text-primary-dark dark:text-primary-light mb-6 text-4xl font-bold">
             Frequently Asked Questions
           </h2>
-          <p className="mb-8 text-lg opacity-80">
+          <p className="text-primary-dark dark:text-primary-light mb-8 text-lg opacity-80">
             Got questions? We have answers. Whether you&apos;re an artist or a
             collector, we&apos;re here to help you navigate the platform.
           </p>
           <Link to="/contact">
-            <button className="btn btn-primary">Contact Support</button>
+            <button className="btn bg-button-bg border-none">
+              Contact Support
+            </button>
           </Link>
         </motion.div>
 
@@ -55,9 +57,13 @@ const HomeFAQ = () => {
                 name="my-accordion-3"
                 defaultChecked={index === 0}
               />
-              <div className="collapse-title text-xl font-medium">{faq.q}</div>
+              <div className="collapse-title text-primary-dark dark:text-primary-light text-xl font-medium">
+                {faq.q}
+              </div>
               <div className="collapse-content">
-                <p className="opacity-80">{faq.a}</p>
+                <p className="text-primary-dark dark:text-primary-light opacity-80">
+                  {faq.a}
+                </p>
               </div>
             </motion.div>
           ))}

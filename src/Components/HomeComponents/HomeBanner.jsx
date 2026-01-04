@@ -74,7 +74,7 @@ const HomeBanner = () => {
                   transition={{ delay: 0.6 }}
                 >
                   <Link to="/explore-artworks">
-                    <button className="btn btn-primary btn-lg">
+                    <button className="btn bg-button-bg btn-lg border-none">
                       Explore Gallery
                     </button>
                   </Link>

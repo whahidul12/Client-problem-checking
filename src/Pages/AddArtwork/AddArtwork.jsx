@@ -104,7 +104,7 @@ const AddArtwork = () => {
   };
 
   return (
-    <div className="from-primary/10 to-secondary/10 min-h-screen bg-linear-to-br px-4 py-12">
+    <div className="bg-primary-light dark:bg-primary-dark min-h-screen px-4 py-12">
       <div className="container mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -123,9 +123,9 @@ const AddArtwork = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="card bg-base-100 shadow-2xl"
+          className="card rounded-3xl shadow-2xl"
         >
-          <div className="card-body bg-card-light dark:bg-card-dark">
+          <div className="card-body bg-card-light dark:bg-card-dark border-button-bg rounded-3xl border">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Image URL */}
               <div className="form-control">
@@ -328,7 +328,7 @@ const AddArtwork = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
+                className={`btn bg-button-bg w-full border-none ${loading ? "loading" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Adding Artwork..." : "Add Artwork"}
