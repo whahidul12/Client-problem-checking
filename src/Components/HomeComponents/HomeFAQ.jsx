@@ -48,7 +48,7 @@ const HomeFAQ = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="collapse-plus bg-base-100 border-base-300 collapse rounded-xl border"
+              className="collapse-plus bg-card-light dark:bg-card-dark border-base-300 collapse rounded-xl border"
             >
               <input
                 type="radio"

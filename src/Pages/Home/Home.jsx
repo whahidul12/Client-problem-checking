@@ -10,7 +10,7 @@ import HomeFeaturedArt from "../../Components/HomeComponents/HomeFeaturedArt";
 
 const Home = () => {
   return (
-    <div className="from-primary/10 to-secondary/10 bg-linear-to-br">
+    <div className="bg-primary-light dark:bg-primary-dark">
       {/* Banner Section */}
       <HomeBanner />
       {/* Featured Artworks Section */}

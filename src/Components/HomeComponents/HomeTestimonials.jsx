@@ -48,7 +48,7 @@ const HomeTestimonials = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.2 }}
-            className="card bg-base-100 border-primary/10 border shadow-xl transition-all duration-300 hover:shadow-2xl"
+            className="card bg-card-light dark:bg-card-dark border-primary/10 border shadow-xl transition-all duration-300 hover:shadow-2xl"
           >
             <div className="card-body">
               <div className="mb-4 flex items-center gap-4">
