@@ -37,7 +37,7 @@ const HomeBanner = () => {
     return () => clearInterval(timer);
   }, [slides.length]);
   return (
-    <div className="relative h-[600px] overflow-hidden">
+    <div className="relative h-[60vh] overflow-hidden">
       {slides.map((slide, index) => (
         <motion.div
           key={slide.id}

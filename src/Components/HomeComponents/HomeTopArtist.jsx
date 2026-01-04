@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import useAxios from "../../Hooks/useAxios";
 
 const HomeTopArtist = () => {
+  const axiosInstance = useAxios();
+  const [topArtists, setTopArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTopArtists = async () => {
+      try {
+        const response = await axiosInstance.get("/top-artists");
+        setTopArtists(response.data);
+      } catch (error) {
+        console.error("Error loading top artists", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopArtists();
+  }, [axiosInstance]);
+
+  if (loading) return null; // Or a small spinner
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -15,42 +36,48 @@ const HomeTopArtist = () => {
             Top Artists of the Week
           </h2>
           <p className="text-primary-dark dark:text-primary-light text-xl">
-            Meet the creative minds behind stunning artworks
+            Most popular creators based on community likes and activity
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {[1, 2, 3].map((artist, index) => (
+          {topArtists.map((artist, index) => (
             <motion.div
-              key={artist}
+              key={artist._id}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
               className="card shadow-xl transition-all hover:shadow-2xl"
             >
-              <div className="card-body from-primary/10 to-secondary/10 text-primary-dark dark:text-primary-light items-center rounded-2xl bg-linear-to-br text-center">
+              <div className="card-body from-primary/10 to-secondary/10 text-primary-dark dark:text-primary-light bg-card-light dark:bg-card-dark items-center rounded-2xl text-center">
                 <div className="avatar mb-4">
                   <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
                     <img
-                      src={`https://i.pravatar.cc/150?img=${artist + 10}`}
-                      alt={`Artist ${artist}`}
+                      src={
+                        artist.artistPhoto ||
+                        `https://i.pravatar.cc/150?u=${artist._id}`
+                      }
+                      alt={artist.artistName}
                     />
                   </div>
                 </div>
-                <h3 className="card-title">Artist Name {artist}</h3>
-                <p className="text-primary-dark dark:text-primary-light text-base">
-                  {50 + artist * 10} Artworks
-                </p>
-                <div className="rating rating-sm">
+                <h3 className="card-title">{artist.artistName}</h3>
+
+                <div className="flex flex-col gap-1">
+                  <p className="text-primary font-semibold">
+                    {artist.totalLikes} Total Likes
+                  </p>
+                  <p className="text-sm opacity-70">
+                    {artist.totalArtworks} Artworks Published
+                  </p>
+                </div>
+
+                <div className="rating rating-xs mt-2">
                   {[...Array(5)].map((_, i) => (
-                    <input
+                    <div
                       key={i}
-                      type="radio"
-                      name={`rating-${artist}`}
-                      className="mask mask-star-2 bg-warning"
-                      defaultChecked={i === 4}
-                      readOnly
+                      className={`mask mask-star-2 ${i < 4 ? "bg-warning" : "bg-gray-300"}`}
                     />
                   ))}
                 </div>

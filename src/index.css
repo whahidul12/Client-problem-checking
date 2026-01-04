@@ -7,8 +7,10 @@
     --color-primary-light: #F7F6EC;
     --color-primary-dark: #13130D;
     --color-crime: #EBE9CF;
-    --color-card-light: #DFDECF;
+    --color-card-light: #f5f5DC;
     --color-card-dark: #262626;
     --color-grey: #C49C4E;
     --color-blue: #605DFF;
+    --color-button-bg: #C8824F;
+    --color-tag-bg: #8DAA5E;
 }

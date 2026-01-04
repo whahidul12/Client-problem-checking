@@ -1,10 +1,3 @@
-import { useState, useEffect, useContext } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router";
-import { Typewriter } from "react-simple-typewriter";
-import ArtworkCard from "../../Components/ArtworkCard/ArtworkCard";
-import useAxios from "../../Hooks/useAxios";
-import { AuthContext } from "../../Context/AuthProvider";
 import HomeBanner from "../../Components/HomeComponents/HomeBanner";
 import HomeTopArtist from "../../Components/HomeComponents/HomeTopArtist";
 import HomeCommunity from "../../Components/HomeComponents/HomeCommunity";
@@ -16,10 +9,6 @@ import HomeCTA from "../../Components/HomeComponents/HomeCTA";
 import HomeFeaturedArt from "../../Components/HomeComponents/HomeFeaturedArt";
 
 const Home = () => {
-  const { user, loading } = useContext(AuthContext);
-  const axiosInstance = useAxios();
-  const [featuredArtworks, setFeaturedArtworks] = useState([]);
-
   return (
     <div className="from-primary/10 to-secondary/10 bg-linear-to-br">
       {/* Banner Section */}

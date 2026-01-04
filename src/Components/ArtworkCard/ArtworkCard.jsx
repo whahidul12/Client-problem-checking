@@ -30,7 +30,7 @@ const ArtworkCard = ({
           </div>
         </div>
         {artwork.category && (
-          <div className="badge badge-primary absolute top-4 left-4 shadow-lg">
+          <div className="badge bg-tag-bg absolute top-4 left-4 border-none shadow-lg">
             {artwork.category}
           </div>
         )}
@@ -52,7 +52,7 @@ const ArtworkCard = ({
 
         <p className="text-primary-dark dark:text-primary-light text-sm">
           by{" "}
-          <span className="text-primary font-semibold">
+          <span className="text-button-bg font-semibold">
             {artwork.artistName}
           </span>
         </p>
@@ -98,7 +98,7 @@ const ArtworkCard = ({
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn btn-sm btn-primary"
+                className="btn btn-sm bg-button-bg border-none"
               >
                 View Details
               </motion.button>

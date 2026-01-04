@@ -74,16 +74,16 @@ const Navbar = () => {
               MyGallery
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to={"/about-us"}
-              className="text-primary-dark dark:text-primary-light text-lg font-semibold"
-            >
-              About Us
-            </NavLink>
-          </li>
         </>
       )}
+      <li>
+        <NavLink
+          to={"/about-us"}
+          className="text-primary-dark dark:text-primary-light text-lg font-semibold"
+        >
+          About Us
+        </NavLink>
+      </li>
     </>
   );
 
