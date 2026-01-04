@@ -20,14 +20,6 @@ const Home = () => {
   const axiosInstance = useAxios();
   const [featuredArtworks, setFeaturedArtworks] = useState([]);
 
-  // Fetch featured artworks
-  useEffect(() => {
-    axiosInstance.get("/artwork/limit").then((response) => {
-      // console.log("create a user from google:", response.data);
-      setFeaturedArtworks(response.data);
-    });
-  }, [user]);
-
   return (
     <div className="from-primary/10 to-secondary/10 bg-linear-to-br">
       {/* Banner Section */}

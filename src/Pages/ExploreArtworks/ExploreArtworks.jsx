@@ -1,16 +1,23 @@
 import { useState, useEffect, useContext } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import ArtworkCard from "../../Components/ArtworkCard/ArtworkCard";
 import { AuthContext } from "../../Context/AuthProvider";
 import useAxios from "../../Hooks/useAxios";
 
 const ExploreArtworks = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const axiosInstance = useAxios();
+
+  // Data States
   const [artworks, setArtworks] = useState([]);
-  const [filteredArtworks, setFilteredArtworks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Filter & Pagination States
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortOption, setSortOption] = useState("newest");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const categories = [
     "All",
@@ -25,42 +32,45 @@ const ExploreArtworks = () => {
     "Sculpture",
   ];
 
-  // Fetch artworks
+  // 1. Reset page to 1 ONLY when filters or search change
   useEffect(() => {
-    axiosInstance.get("/artwork").then((response) => {
-      // console.log("create a user from google:", response.data);
-      setArtworks(response.data);
-      setFilteredArtworks(response.data);
-    });
-  }, [user]);
+    setPage(1);
+  }, [searchQuery, selectedCategory, sortOption]);
 
+  // 2. Fetch data whenever page OR filters change
   useEffect(() => {
-    if (!artworks.length) return;
+    const fetchArtworks = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get("/artwork", {
+          params: {
+            page: page,
+            limit: 8,
+            search: searchQuery,
+            category: selectedCategory,
+            sort: sortOption,
+          },
+        });
 
-    let filtered = artworks;
+        setArtworks(response.data.artworks);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error("Failed to fetch artworks", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Filter by category
-    if (selectedCategory !== "All") {
-      filtered = filtered.filter(
-        (artwork) =>
-          artwork.category?.toLowerCase() === selectedCategory.toLowerCase(),
-      );
-    }
+    // Debounce the fetch for the search input to prevent excessive API calls
+    const timeoutId = setTimeout(() => {
+      fetchArtworks();
+    }, 300);
 
-    // Filter by search query
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(
-        (artwork) =>
-          artwork.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          artwork.artistName?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-    }
-
-    setFilteredArtworks(filtered);
-  }, [artworks, searchQuery, selectedCategory]);
+    return () => clearTimeout(timeoutId);
+  }, [page, searchQuery, selectedCategory, sortOption, axiosInstance]);
 
   return (
-    <div className="from-primary/10 to-secondary/10 min-h-screen bg-linear-to-br px-4 py-12">
+    <div className="from-primary/10 to-secondary/10 min-h-screen bg-gradient-to-br px-4 py-12">
       <div className="container mx-auto">
         {/* Header */}
         <motion.div
@@ -68,110 +78,156 @@ const ExploreArtworks = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-12 text-center"
         >
-          <h1 className="gradient-text text-primary-dark dark:text-primary-light mb-4 text-5xl font-bold">
+          <h1 className="text-primary-dark dark:text-primary-light mb-4 text-5xl font-bold">
             Explore Artworks
           </h1>
-          <p className="text-primary-dark dark:text-primary-light text-xl">
+          <p className="text-primary-dark dark:text-primary-light text-xl opacity-80">
             Discover amazing artworks from talented artists around the world
           </p>
         </motion.div>
 
-        {/* Search and Filter Section */}
+        {/* --- CONTROLS SECTION --- */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-8 space-y-4"
+          className="mb-8 space-y-6"
         >
-          {/* Search Bar */}
-          <div className="form-control mx-auto max-w-md">
-            <div className="input-group">
+          {/* Search & Sort Row */}
+          <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="form-control w-full md:w-2/3">
               <input
                 type="text"
                 placeholder="Search by title or artist..."
-                className="input input-bordered bg-primary-light dark:bg-primary-dark text-primary-dark dark:text-primary-light w-full outline-1"
+                className="input input-bordered bg-base-100/50 focus:border-primary w-full backdrop-blur-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+
+            <select
+              className="select select-bordered bg-base-100/50 w-full backdrop-blur-sm md:w-1/3"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="likes">Most Popular</option>
+            </select>
           </div>
 
-          {/* Category Filter */}
+          {/* Category Tabs */}
           <div className="flex flex-wrap justify-center gap-2">
             {categories.map((category) => (
-              <motion.button
+              <button
                 key={category}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                type="button"
                 onClick={() => setSelectedCategory(category)}
-                className={`btn ${
+                className={`btn btn-sm md:btn-md rounded-full px-6 transition-all ${
                   selectedCategory === category
-                    ? "bg-blue"
-                    : "bg-card-light dark:bg-card-dark text-primary-dark dark:text-primary-light"
+                    ? "btn-primary shadow-lg"
+                    : "btn-ghost bg-base-100/30 hover:bg-base-100/50"
                 }`}
               >
                 {category}
-              </motion.button>
+              </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Results Info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6 text-center"
-        >
-          <p className="text-primary-dark dark:text-primary-light">
-            Found {filteredArtworks.length} artwork
-            {filteredArtworks.length !== 1 ? "s" : ""}
-            {searchQuery && ` for "${searchQuery}"`}
-            {selectedCategory !== "All" && ` in ${selectedCategory}`}
-          </p>
-        </motion.div>
-
-        {/* Artworks Grid */}
+        {/* --- CONTENT SECTION --- */}
         {loading ? (
           <div className="flex min-h-[400px] items-center justify-center">
             <span className="loading loading-spinner loading-lg text-primary"></span>
           </div>
-        ) : filteredArtworks.length > 0 ? (
-          <motion.div
-            key={selectedCategory + searchQuery}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {filteredArtworks.map((artwork) => (
-              <motion.div
-                key={artwork._id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                layout={false} // 🔥 prevents layout animation bugs
-              >
-                <ArtworkCard artwork={artwork} id={artwork._id} />
-              </motion.div>
-            ))}
-          </motion.div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="py-20 text-center"
-          >
-            <div className="mb-4 text-6xl">🎨</div>
-            <h3 className="text-primary-dark dark:text-primary-light mb-2 text-2xl font-bold">
-              No Artworks Found
-            </h3>
-            <p className="text-primary-dark dark:text-primary-light">
-              Try adjusting your search or filter criteria
-            </p>
-          </motion.div>
+          <>
+            {artworks.length > 0 ? (
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <AnimatePresence mode="popLayout">
+                  {artworks.map((artwork) => (
+                    <motion.div
+                      key={artwork._id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ArtworkCard artwork={artwork} id={artwork._id} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="py-20 text-center">
+                <div className="mb-4 text-6xl">🎨</div>
+                <h3 className="mb-2 text-2xl font-bold">No Artworks Found</h3>
+                <p className="opacity-70">
+                  Try adjusting your filters or search terms
+                </p>
+              </div>
+            )}
+
+            {/* --- PAGINATION CONTROLS --- */}
+            {totalPages > 1 && (
+              <div className="mt-12 flex justify-center">
+                <div className="join bg-base-100 rounded-lg shadow-lg">
+                  <button
+                    type="button"
+                    className="join-item btn btn-ghost"
+                    disabled={page === 1}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  >
+                    «
+                  </button>
+
+                  {[...Array(totalPages)].map((_, index) => {
+                    const pageNum = index + 1;
+                    // Logics to show first, last, and pages around current
+                    if (
+                      pageNum === 1 ||
+                      pageNum === totalPages ||
+                      (pageNum >= page - 1 && pageNum <= page + 1)
+                    ) {
+                      return (
+                        <button
+                          key={pageNum}
+                          type="button"
+                          className={`join-item btn ${page === pageNum ? "btn-primary" : "btn-ghost"}`}
+                          onClick={() => setPage(pageNum)}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    } else if (pageNum === page - 2 || pageNum === page + 2) {
+                      return (
+                        <button
+                          key={pageNum}
+                          type="button"
+                          className="join-item btn btn-disabled"
+                        >
+                          ...
+                        </button>
+                      );
+                    }
+                    return null;
+                  })}
+
+                  <button
+                    type="button"
+                    className="join-item btn btn-ghost"
+                    disabled={page === totalPages}
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  >
+                    »
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

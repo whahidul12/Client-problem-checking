@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Typewriter } from "react-simple-typewriter";
 import ArtworkCard from "../../Components/ArtworkCard/ArtworkCard";
@@ -10,6 +10,14 @@ const HomeFeaturedArt = () => {
   const { user, loading } = useContext(AuthContext);
   const axiosInstance = useAxios();
   const [featuredArtworks, setFeaturedArtworks] = useState([]);
+
+  // Fetch featured artworks
+  useEffect(() => {
+    axiosInstance.get("/artwork/limit").then((response) => {
+      // console.log("create a user from google:", response.data);
+      setFeaturedArtworks(response.data);
+    });
+  }, [user]);
 
   return (
     <section className="container mx-auto px-4 py-20">
@@ -40,7 +48,7 @@ const HomeFeaturedArt = () => {
           <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
           {featuredArtworks.map((artwork) => (
             <ArtworkCard key={artwork._id} artwork={artwork} id={artwork._id} />
           ))}

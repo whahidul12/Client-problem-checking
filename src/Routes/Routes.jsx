@@ -16,6 +16,7 @@ const ArtworkDetails = lazy(
 import PrivetRoutes from "./PrivetRoutes";
 import NotFound from "../Pages/NotFound/NotFound";
 import LoadingSpinner from "../Components/LoadingSpinner/LoadingSpinner";
+import AboutUs from "../Pages/AboutUs/AboutUs";
 
 const Routes = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const Routes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
             <ExploreArtworks></ExploreArtworks>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/about-us",
+        element: (
+          <Suspense fallback={<LoadingSpinner></LoadingSpinner>}>
+            <AboutUs></AboutUs>
           </Suspense>
         ),
       },
